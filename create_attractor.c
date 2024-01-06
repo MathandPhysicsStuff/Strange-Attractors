@@ -1,9 +1,10 @@
 #include "header.h"
 
+/*finds constants that create a chaotic attractor*/
 //c is an array of constants
 //c_len is the number of constants 
 //c_range is the range of the constants centered around 0, so c_range = 2 is picking values from -2 to 2 
-int find_attractor(double *c, int c_len, double c_range)
+int find_2d_attractor(double *c, int c_len, double c_range)
 {
     int i, j, k;
     double x, y;
@@ -89,6 +90,26 @@ int find_attractor(double *c, int c_len, double c_range)
     }
 }
 
+/*creates the array of points to be rendered*/
+//p is an array of points
+//iterations is the array length 
+void create_2d_attractor(Point *p, double *c, int iterations)
+{
+    int i;
+    double x, y, xn, yn;
+
+    x = 0.002*((double)rand() / (double)RAND_MAX) - 0.001; 
+    y = 0.002*((double)rand() / (double)RAND_MAX) - 0.001; 
+
+    for (i = 0; i < iterations; i++)
+    {
+        xn = c[0] + c[1]*x + c[2]*x*x + c[3]*x*y + c[4]*y*y + c[5]*y;
+        yn = c[6] + c[7]*x + c[8]*x*x + c[9]*x*y + c[10]*y*y + c[11]*y;
+        
+        p[i].x = xn;
+        p[i].y = yn;
+    }
+}
 
 
 

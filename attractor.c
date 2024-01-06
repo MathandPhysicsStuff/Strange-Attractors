@@ -5,6 +5,8 @@
 
 #include "SDL2/SDL.h"
 
+#include "header.h"
+
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
@@ -33,7 +35,13 @@ int main()
     /*Place where variables, structs, and some functions are initiated*/
     /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/ 
     /*vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv*/ 
+    int c_len = 12;
+    double c[12]; 
+    Point points[1000];
 
+    find_2d_attractor(c, c_len, 2);
+
+    create_2d_attractor(points, c, 1000);
     /*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
     /*||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
