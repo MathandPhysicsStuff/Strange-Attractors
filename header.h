@@ -8,8 +8,11 @@
 
 #include "SDL2/SDL.h"
 
+enum BOOL { FALSE, TRUE };
+enum ATTRACTOR_FOUND { CHAOTIC, DECAY, UNBOUNDED };
+
 //create_attractor.c functions
-int find_attractor(double *c, int c_len);
+int find_attractor(double *c, int c_len, double c_range);
 
 //predefined_attractors.c functions
 
