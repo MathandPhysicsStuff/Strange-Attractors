@@ -108,10 +108,10 @@ int find_2d_attractor(double *c, int c_len, double c_range)
         }
 
         //if chaotic attractor was found
-        if ((attractor == CHAOTIC) && (lyapunov > 0))
+        if ((attractor == CHAOTIC) && (lyapunov > 10))
         { 
-            printf("\ncounter: %d\n", counter);
-            printf("lyapunov exponent: %lf\n", lyapunov);
+            //printf("\ncounter: %d\n", counter);
+            //printf("lyapunov exponent: %lf\n", lyapunov);
             found = TRUE;  
             return found;
         }
