@@ -6,6 +6,7 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "SDL2/SDL.h"
 

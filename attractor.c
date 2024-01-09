@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <string.h>
 
 #include "SDL2/SDL.h"
 
@@ -10,7 +11,7 @@
 static SDL_Window *window = NULL;
 static SDL_Renderer *renderer = NULL;
 
-const int SCREEN_WIDTH = 1280; //640;
+const int SCREEN_WIDTH = 1280; //640 405;
 const int SCREEN_HEIGHT = 720; //640;
 const int screen_centerX = SCREEN_WIDTH / 2;
 const int screen_centerY = SCREEN_HEIGHT / 2;
@@ -44,7 +45,8 @@ int main()
 
     int c_len = 12;
     int number_of_points = 100000;
-    double c[c_len]; 
+    double c[c_len];
+    double c_copy[c_len]; 
     Point points[number_of_points];
 
     double shift = 0;
@@ -76,12 +78,20 @@ int main()
                         running = SDL_FALSE;
                         break;
 
-                    case SDLK_r:
+                    case SDLK_RIGHT:
                         find_2d_attractor(c, c_len, 2);
                         create_2d_attractor(points, c, number_of_points);
+                        memcpy(c_copy, c, sizeof(c));
                         animate = FALSE; 
                         break; 
- 
+  
+                    case SDLK_r:
+                        memcpy(c, c_copy, sizeof(c_copy));
+                        create_2d_attractor(points, c, number_of_points);
+                        slide_show = FALSE; 
+                        animate = FALSE; 
+                        break;
+
                     case SDLK_s:
                         slide_show = TRUE; 
                         break;
