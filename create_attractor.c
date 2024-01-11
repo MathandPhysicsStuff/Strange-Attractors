@@ -7,7 +7,7 @@
 int find_2d_attractor(double *c, int c_len, double c_range)
 {
     int i, j, k;
-    double x, y, x2, y2;
+    double x, y, x2, y2, xp, yp;
     double xn, yn, x2n, y2n; //next x and y
     double xl, yl, xln, yln, dx, dy, d0, d; //for lyapunov exponent test
     double lyapunov;
@@ -35,7 +35,7 @@ int find_2d_attractor(double *c, int c_len, double c_range)
 
         x2 = 0.002*((double)rand() / (double)RAND_MAX) - 0.001; 
         y2 = 0.002*((double)rand() / (double)RAND_MAX) - 0.001; 
-        
+
         //initializing a point very close to (x,y) for the lyapunov exponent test
         xl = x + 0.0001*((double)rand() / (double)RAND_MAX);
         yl = y + 0.0001*((double)rand() / (double)RAND_MAX);
@@ -59,7 +59,9 @@ int find_2d_attractor(double *c, int c_len, double c_range)
  
             x2n = c[0] + c[1]*x2 + c[2]*x2*x2 + c[3]*x2*y2 + c[4]*y2*y2 + c[5]*y2;
             y2n = c[6] + c[7]*x2 + c[8]*x2*x2 + c[9]*x2*y2 + c[10]*y2*y2 + c[11]*y2;
-
+            
+            
+            //checking if attractor is stable
             if ((fabs(x2 - x) < min && fabs(y2 - y) < min))
             {
                 attractor = STABLE;
@@ -72,14 +74,13 @@ int find_2d_attractor(double *c, int c_len, double c_range)
                 attractor = UNBOUNDED;
                 break;
             }
-            
+
             //checking if point decays
             if ((fabs(xn - x) < min) && (fabs(yn - y) < min))
             {
                 attractor = DECAY;
                 break;
             }
-
             //checking if point is chaotic
             if (k > 1000)
             {
@@ -99,7 +100,6 @@ int find_2d_attractor(double *c, int c_len, double c_range)
                 yl = yn + d0*dy/d;
             }
  
-            //printf("lyapunov exponent: %lf\n", lyapunov);
             x = xn;
             y = yn;
 
@@ -135,6 +135,45 @@ void create_2d_attractor(Point *p, double *c, int iterations)
     {
         xn = c[0] + c[1]*x + c[2]*x*x + c[3]*x*y + c[4]*y*y + c[5]*y;
         yn = c[6] + c[7]*x + c[8]*x*x + c[9]*x*y + c[10]*y*y + c[11]*y;
+
+        x = xn;
+        y = yn;
+        
+        p[i].x = xn;
+        p[i].y = yn;
+        //printf("%lf %lf\n", xn, yn);
+    }
+}
+
+
+/*creates the array of points to be rendered and animates it*/
+//p is an array of points
+//iterations is the array length 
+void update_2d_attractor(Point *p, double *c, int iterations, double *inc, int *count)
+{
+    int i;
+    double x, y, xn, yn;
+
+    x = 0.002*((double)rand() / (double)RAND_MAX) - 0.001; 
+    y = 0.002*((double)rand() / (double)RAND_MAX) - 0.001; 
+    
+    c[0] += *inc;
+
+    for (i = 0; i < iterations; i++)
+    {
+        xn = c[0] + c[1]*x + c[2]*x*x + c[3]*x*y + c[4]*y*y + c[5]*y;
+        yn = c[6] + c[7]*x + c[8]*x*x + c[9]*x*y + c[10]*y*y + c[11]*y;
+        
+        if (fabs(x) > 10000000000 || fabs(y) > 10000000000)
+            *count += 1;
+            if (*count == 10000)
+            {
+                *inc *= -1;
+                *count = 0;
+            }
+
+        if (fabs(xn - x) < 0.000001 && fabs(yn - y) < 0.000001)
+            *inc *= -1;
 
         x = xn;
         y = yn;

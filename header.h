@@ -27,7 +27,8 @@ typedef struct RenderData
 
 //create_attractor.c functions
 int find_2d_attractor(double *c, int c_len, double c_range); //finds constants that create a chaotic attractor
-void create_2d_attractor(Point *p, double *c, int iter); //creates the array of points to be rendered
+void create_2d_attractor(Point *p, double *c, int iterations); //creates the array of points to be rendered
+void update_2d_attractor(Point *p, double *c, int iterations, double *inc, int *count); //creates the array of points to be rendered and updates it
 
 //render_attractor.c functions
 void render_2d_attractor(SDL_Renderer *renderer, RenderData *RD, Point *p, int iterations);

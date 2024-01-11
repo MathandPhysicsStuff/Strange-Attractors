@@ -56,7 +56,11 @@ int main()
     double c[c_len];
     double c_copy[c_len]; 
     double c_buffer[c_len]; 
+    double c_buffer_copy[c_len]; 
     Point points[number_of_points];
+    
+    double inc = 0.0001;     
+    int count = 0;     
 
     double shift = 0;
     int animate = FALSE;
@@ -96,6 +100,16 @@ int main()
                         memcpy(c_copy, c, sizeof(c));
                         animate = FALSE; 
                         break; 
+                      
+                    //start slide show of attractors 
+                    case SDLK_i:
+                        render_data.scale *= 1.2;  
+                        break;
+
+                    //start slide show of attractors 
+                    case SDLK_o:
+                        render_data.scale *= 0.8;  
+                        break;
                     
                     //start slide show of attractors 
                     case SDLK_UP:
@@ -121,12 +135,12 @@ int main()
                         break; 
 
                     case SDLK_m:
-                        fread(c_buffer, sizeof(double), c_len, read_attractor);
+                        fread(c, sizeof(double), c_len, read_attractor);
+                        memcpy(c_copy, c, sizeof(c));
 
                         fseek(read_attractor, b, SEEK_SET);
                         b += sizeof(double)*c_len;
 
-                        memcpy(c, c_buffer, sizeof(c_buffer));
                         create_2d_attractor(points, c, number_of_points);
 
                         animate = FALSE; 
@@ -135,11 +149,11 @@ int main()
                     case SDLK_n:
 
                         fseek(read_attractor, 0, SEEK_SET);
-                        b = 0; // sizeof(double)*c_len;
+                        b = 0; 
 
-                        fread(c_buffer, sizeof(double), c_len, read_attractor);
+                        fread(c, sizeof(double), c_len, read_attractor);
+                        memcpy(c_copy, c, sizeof(c));
 
-                        memcpy(c, c_buffer, sizeof(c_buffer));
                         create_2d_attractor(points, c, number_of_points);
 
                         animate = FALSE; 
@@ -157,9 +171,9 @@ int main()
 
         if (animate == TRUE)
         {
-            create_2d_attractor(points, c, number_of_points);
-            shift += 0.0005;
-            c[0] += 0.0002*sin(shift);
+            update_2d_attractor(points, c, number_of_points, &inc, &count);
+            //shift += 0.0005;
+            //c[0] += 0.0002*sin(shift);
             //printf("c_0: %lf\n", c[0]);
         }
 
